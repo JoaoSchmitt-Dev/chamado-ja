@@ -140,28 +140,50 @@ php artisan config:clear
 
 > O arquivo `.env` não deve ser enviado para o repositório, pois pode conter informações sensíveis como senhas e credenciais.
 
+## Scripts do banco de dados
+
+A estrutura inicial do banco de dados está disponível nos seguintes arquivos:
+
+- `database/schema.sql` — cria as tabelas, restrições, relacionamentos e índices;
+- `database/seed.sql` — insere dados fictícios para testes;
+- `docs/consultas.sql` — contém consultas SQL utilizadas para validar o modelo e responder perguntas do negócio.
+
+As tabelas principais do sistema são:
+
+- `usuarios`;
+- `categorias`;
+- `chamados`;
+- `comentarios`;
+- `historico_status`.
+
+A ordem recomendada para utilização dos arquivos é:
+
+1. `database/schema.sql` — cria a estrutura do banco;
+2. `database/seed.sql` — insere os dados de teste;
+3. `docs/consultas.sql` — executa consultas para validar os dados e relacionamentos.
+
+## Modelo de dados
+
+O banco de dados é composto por cinco entidades principais:
+
+- `usuarios` — armazena os usuários e seus papéis no sistema;
+- `categorias` — padroniza a classificação dos chamados;
+- `chamados` — armazena as principais informações dos atendimentos;
+- `comentarios` — registra as interações realizadas durante os chamados;
+- `historico_status` — registra as alterações de status realizadas ao longo do atendimento.
+
+Os chamados possuem relacionamento com o solicitante, técnico responsável e categoria. Comentários e alterações de status são mantidos em tabelas próprias para preservar o histórico e evitar repetição de dados.
+
 ## Migrations
 
-Para criar a estrutura do banco de dados:
+O modelo inicial do banco de dados foi definido no arquivo `database/schema.sql`.
+
+As migrations do Laravel serão desenvolvidas com base nesse modelo, permitindo futuramente que a estrutura do banco seja criada diretamente pela aplicação.
+
+Quando as migrations estiverem implementadas, poderão ser executadas com:
 
 ```bash
 php artisan migrate
-```
-
-As migrations serão desenvolvidas gradualmente conforme as etapas do Projeto Integrador.
-
-## Dados iniciais
-
-Quando houver seeders disponíveis, os dados iniciais poderão ser carregados com:
-
-```bash
-php artisan db:seed
-```
-
-ou:
-
-```bash
-php artisan migrate --seed
 ```
 
 ## Executando o projeto
@@ -225,12 +247,34 @@ Todo chamado deverá possuir:
 - prioridade;
 - status.
 
+Um chamado poderá inicialmente não possuir técnico responsável. O técnico poderá ser atribuído posteriormente durante o atendimento.
+
 Um chamado também poderá possuir:
 
 - comentários;
 - registros de histórico.
 
+Os usuários do sistema possuem um papel definido, podendo ser:
+
+- solicitante;
+- técnico.
+
 As alterações de status deverão ser registradas no histórico.
+
+Os valores de prioridade deverão ser:
+
+- baixa;
+- media;
+- alta;
+- critica.
+
+Os valores de status deverão ser:
+
+- aberto;
+- em_atendimento;
+- aguardando;
+- resolvido;
+- fechado.
 
 Dados inválidos deverão ser rejeitados pela API.
 
@@ -292,10 +336,17 @@ Estrutura atual:
 
 ```text
 chamado-ja/
+├── database/
+│   ├── schema.sql
+│   └── seed.sql
 ├── docs/
 │   ├── casos-de-uso.md
+|   ├── consultas.sql
 │   ├── contrato-api.md
+│   ├── decisoes-banco.md
 │   ├── diario.md
+|   ├── modelo-er.md
+|   ├── modelo-er.png
 │   └── requisitos.md
 ├── README.md
 └── ...

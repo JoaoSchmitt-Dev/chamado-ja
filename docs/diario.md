@@ -6,9 +6,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 1 — 29/09/2026 e 30/09/2026
+## Semana 1 — 28/09/2026 e 30/09/2026
 
-### Terça-feira — 29/09/2026
+### Segunda-feira — 28/09/2026
 
 **O que foi feito:**
 
@@ -111,91 +111,127 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 2 — 06/10/2026 e 07/10/2026
+## Semana 2 — 05/10/2026 e 07/10/2026
 
-### Terça-feira — 06/10/2026
+### Segunda-feira — 05/10/2026
 
 **O que foi feito:**
 
-- 
+- Início da etapa de banco de dados do projeto ChamadoJá.
+- Definição das entidades necessárias para representar o sistema.
+- Modelagem das tabelas `usuarios`, `categorias`, `chamados`, `comentarios` e `historico_status`.
+- Definição das chaves primárias e estrangeiras.
+- Definição dos relacionamentos entre as tabelas.
+- Definição dos campos obrigatórios e dos campos que podem possuir valor nulo.
+- Definição dos valores permitidos para prioridade e status dos chamados.
+- Criação do modelo entidade-relacionamento do banco.
+- Início da criação do arquivo responsável pela estrutura do banco de dados.
 
 **Dificuldades encontradas:**
 
-- 
+- N/A
 
 **Decisões tomadas:**
 
-- 
+- Utilizar uma única tabela `usuarios` para armazenar solicitantes e técnicos, diferenciando-os por seu tipo ou papel no sistema.
+- Criar a tabela `categorias` separadamente para evitar repetição de informações nos chamados.
+- Utilizar `solicitante_id`, `tecnico_id` e `categoria_id` como chaves estrangeiras na tabela `chamados`.
+- Permitir que `tecnico_id` seja nulo enquanto nenhum técnico estiver atribuído ao chamado.
+- Criar tabelas separadas para `comentarios` e `historico_status`, pois um chamado pode possuir vários registros desses tipos.
+- Manter prioridade e status com valores padronizados para evitar informações inconsistentes.
 
 **Testes realizados:**
 
-- 
+- N/A
 
 **Pendências:**
 
-- 
+- Finalizar os scripts SQL.
+- Criar dados iniciais para testar os relacionamentos.
+- Criar consultas SQL relacionadas às necessidades do sistema.
+- Documentar as decisões tomadas durante a modelagem.
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na revisão da modelagem do banco de dados e na compreensão dos relacionamentos entre as entidades.
+- Parte gerada ou sugerida: sugestões para organização das tabelas, relacionamentos, regras de integridade e documentação.
+- Alterações realizadas por mim: revisão das sugestões e adaptação da estrutura conforme os requisitos do projeto ChamadoJá.
+- Como foi testado ou validado: comparação da modelagem com os requisitos do projeto e revisão dos relacionamentos definidos no banco.
+
+---
 
 ### Quarta-feira — 07/10/2026
 
 **O que foi feito:**
 
-- 
+- Finalização da estrutura inicial do banco de dados.
+- Finalização do arquivo `schema.sql` com a criação das tabelas, chaves e restrições.
+- Criação do arquivo `seed.sql` com dados suficientes para testar os relacionamentos entre as tabelas.
+- Criação do arquivo `consultas.sql`.
+- Desenvolvimento das consultas necessárias para responder às principais perguntas do sistema.
+- Criação e revisão do arquivo `modelo-er.md`.
+- Criação do arquivo `docs/decisoes-banco.md`.
+- Documentação dos motivos para a existência de cada tabela.
+- Documentação dos motivos pelos quais determinadas informações não são armazenadas diretamente na tabela `chamados`.
+- Revisão da organização e normalização do banco de dados.
 
 **Dificuldades encontradas:**
 
-- 
+- N/A
 
 **Decisões tomadas:**
 
-- 
+- Manter o `modelo-er.md` focado na estrutura das entidades e relacionamentos.
+- Criar o arquivo `decisoes-banco.md` especificamente para registrar as justificativas das decisões de modelagem.
+- Manter usuários, categorias, comentários e histórico em tabelas próprias para reduzir repetição de dados.
+- Utilizar chaves estrangeiras para relacionar os dados em vez de repetir nomes e outras informações diretamente na tabela `chamados`.
+- Criar dados iniciais que permitam testar diferentes situações de chamados, categorias, usuários, comentários e alterações de status.
 
 **Testes realizados:**
 
-- 
+- N/A
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na revisão dos scripts SQL, elaboração das consultas e organização da documentação da etapa de banco de dados.
+- Parte gerada ou sugerida: sugestões de consultas SQL, estrutura do `seed.sql`, explicações sobre relacionamentos e organização do arquivo `decisoes-banco.md`.
+- Alterações realizadas por mim: análise, adaptação e organização das sugestões conforme a estrutura definida para o projeto.
+- Como foi testado ou validado: revisão dos scripts, análise dos relacionamentos e conferência dos resultados esperados das consultas.
 
 ### Fechamento da semana
 
 **Resumo da semana:**
 
-- 
+- Foi concluída a etapa inicial de modelagem do banco de dados do ChamadoJá.
+- Foram definidas as tabelas `usuarios`, `categorias`, `chamados`, `comentarios` e `historico_status`.
+- Foram estabelecidas as chaves primárias, estrangeiras, relacionamentos e restrições necessárias.
+- Foram criados os arquivos `schema.sql`, `seed.sql` e `consultas.sql`.
+- O modelo entidade-relacionamento e as decisões de banco foram documentados.
+- A estrutura do banco ficou preparada para posteriormente ser integrada à aplicação Laravel.
 
 **Pendências para a próxima semana:**
 
-- 
+- N/A
 
 ---
 
-## Semana 3 — 13/10/2026 e 14/10/2026
+## Semana 3 — 12/10/2026 e 14/10/2026
 
-### Terça-feira — 13/10/2026
+### Segunda-feira — 12/10/2026
 
 **O que foi feito:**
 
@@ -275,9 +311,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 4 — 20/10/2026 e 21/10/2026
+## Semana 4 — 19/10/2026 e 21/10/2026
 
-### Terça-feira — 20/10/2026
+### Segunda-feira — 19/10/2026
 
 **O que foi feito:**
 
@@ -357,9 +393,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 5 — 27/10/2026 e 28/10/2026
+## Semana 5 — 26/10/2026 e 28/10/2026
 
-### Terça-feira — 27/10/2026
+### Segunda-feira — 26/10/2026
 
 **O que foi feito:**
 
@@ -439,9 +475,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 6 — 03/11/2026 e 04/11/2026
+## Semana 6 — 02/11/2026 e 04/11/2026
 
-### Terça-feira — 03/11/2026
+### Segunda-feira — 02/11/2026
 
 **O que foi feito:**
 
@@ -521,9 +557,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 7 — 10/11/2026 e 11/11/2026
+## Semana 7 — 09/11/2026 e 11/11/2026
 
-### Terça-feira — 10/11/2026
+### Segunda-feira — 09/11/2026
 
 **O que foi feito:**
 
@@ -603,9 +639,9 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 8 — 17/11/2026 e 18/11/2026
+## Semana 8 — 16/11/2026 e 18/11/2026
 
-### Terça-feira — 17/11/2026
+### Segunda-feira — 16/11/2026
 
 **O que foi feito:**
 
