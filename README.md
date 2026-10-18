@@ -4,7 +4,7 @@ API de gestão de chamados de suporte técnico desenvolvida como Projeto Integra
 
 ## Objetivo do projeto
 
-O Chamado Já tem como objetivo centralizar e organizar chamados de suporte técnico, permitindo acompanhar cada atendimento desde a abertura até a resolução.
+O ChamadoJá tem como objetivo centralizar e organizar chamados de suporte técnico, permitindo acompanhar cada atendimento desde a abertura até a resolução.
 
 A aplicação será desenvolvida como uma API REST utilizando Laravel e PostgreSQL.
 
@@ -142,25 +142,13 @@ php artisan config:clear
 
 ## Scripts do banco de dados
 
-A estrutura inicial do banco de dados está disponível nos seguintes arquivos:
+Os scripts SQL utilizados durante a etapa de modelagem permanecem no projeto como referência e documentação da estrutura inicial do banco:
 
-- `database/schema.sql` — cria as tabelas, restrições, relacionamentos e índices;
-- `database/seed.sql` — insere dados fictícios para testes;
-- `docs/consultas.sql` — contém consultas SQL utilizadas para validar o modelo e responder perguntas do negócio.
+- `database/schema.sql` — estrutura SQL definida durante a modelagem;
+- `database/seed.sql` — dados fictícios utilizados nos testes iniciais;
+- `docs/consultas.sql` — consultas SQL utilizadas para validar o modelo e responder perguntas do negócio.
 
-As tabelas principais do sistema são:
-
-- `usuarios`;
-- `categorias`;
-- `chamados`;
-- `comentarios`;
-- `historico_status`.
-
-A ordem recomendada para utilização dos arquivos é:
-
-1. `database/schema.sql` — cria a estrutura do banco;
-2. `database/seed.sql` — insere os dados de teste;
-3. `docs/consultas.sql` — executa consultas para validar os dados e relacionamentos.
+Na aplicação Laravel, a criação da estrutura do banco é realizada pelas migrations e a carga de dados de demonstração é realizada pelos seeders.
 
 ## Modelo de dados
 
@@ -176,15 +164,80 @@ Os chamados possuem relacionamento com o solicitante, técnico responsável e ca
 
 ## Migrations
 
-O modelo inicial do banco de dados foi definido no arquivo `database/schema.sql`.
+A estrutura do banco de dados foi implementada por meio das migrations do Laravel.
 
-As migrations do Laravel serão desenvolvidas com base nesse modelo, permitindo futuramente que a estrutura do banco seja criada diretamente pela aplicação.
+As principais tabelas criadas são:
 
-Quando as migrations estiverem implementadas, poderão ser executadas com:
+- `usuarios`;
+- `categorias`;
+- `chamados`;
+- `comentarios`;
+- `historico_status`.
+
+As migrations também configuram:
+
+- chaves primárias;
+- chaves estrangeiras;
+- índices;
+- valores permitidos para papel, prioridade e status;
+- valores padrão;
+- campos opcionais.
+
+Para executar as migrations:
 
 ```bash
 php artisan migrate
 ```
+
+Para apagar as tabelas e recriar toda a estrutura do banco:
+
+```bash
+php artisan migrate:fresh
+```
+
+> O comando `migrate:fresh` apaga todas as tabelas do banco configurado antes de executar novamente as migrations.
+
+## Models e relacionamentos
+
+O projeto possui os seguintes Models Eloquent:
+
+- `Usuario`;
+- `Categoria`;
+- `Chamado`;
+- `Comentario`;
+- `HistoricoStatus`.
+
+Os principais relacionamentos são:
+
+- um usuário pode abrir vários chamados como solicitante;
+- um usuário pode ser responsável por vários chamados como técnico;
+- um chamado pertence a um solicitante;
+- um chamado pode possuir um técnico responsável;
+- um chamado pertence a uma categoria;
+- uma categoria pode possuir vários chamados;
+- um chamado pode possuir vários comentários;
+- cada comentário pertence a um usuário;
+- um chamado pode possuir vários registros no histórico de status;
+- cada registro de histórico está relacionado ao usuário responsável pela alteração.
+
+## Dados de demonstração
+
+O projeto possui dados de demonstração gerados pelo `DatabaseSeeder`.
+
+A carga inicial contém:
+
+- usuários solicitantes;
+- usuários técnicos;
+- categorias;
+- chamados relacionados.
+
+Para recriar o banco e carregar os dados de demonstração:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Esse comando recria todas as tabelas e, em seguida, executa os seeders do projeto.
 
 ## Executando o projeto
 
@@ -198,6 +251,37 @@ Por padrão, a aplicação ficará disponível em:
 
 ```text
 http://127.0.0.1:8000
+```
+
+## Rota de saúde
+
+A API possui uma rota simples para verificar se a aplicação está funcionando:
+
+```text
+GET /api/saude
+```
+
+Com o servidor em execução, a rota pode ser acessada em:
+
+```text
+http://127.0.0.1:8000/api/saude
+```
+
+Ou testada pelo terminal:
+
+```bash
+curl.exe http://127.0.0.1:8000/api/saude
+```
+
+Resposta esperada:
+
+```json
+{
+    "dados": {
+        "aplicacao": "ChamadoJá",
+        "status": "funcionando"
+    }
+}
 ```
 
 ## Contrato inicial da API
@@ -428,6 +512,15 @@ git push
 
 Projeto em desenvolvimento.
 
-O desenvolvimento será realizado de forma incremental durante as etapas do Projeto Integrador.
+Até o momento foram concluídas:
 
-As funcionalidades, decisões técnicas, testes e alterações serão documentados conforme a evolução do projeto.
+- documentação inicial dos requisitos;
+- modelagem do banco de dados;
+- migrations;
+- chaves estrangeiras e índices;
+- Models Eloquent;
+- relacionamentos entre os Models;
+- dados de demonstração utilizando Seeder;
+- rota de saúde `GET /api/saude`.
+
+As próximas etapas envolvem a implementação dos controllers, validações e endpoints da API.

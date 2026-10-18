@@ -235,79 +235,129 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 **O que foi feito:**
 
-- 
+- Continuação da implementação da estrutura do banco de dados no Laravel.
+- Revisão das migrations das tabelas `usuarios`, `categorias`, `chamados`, `comentarios` e `historico_status`.
+- Configuração das chaves estrangeiras utilizando `foreignId()` e `constrained()`.
+- Definição dos campos opcionais, como `tecnico_id` na tabela `chamados`.
+- Definição dos valores permitidos para papel, prioridade e status utilizando `enum`.
+- Inclusão dos índices definidos anteriormente no modelo do banco.
+- Execução das migrations utilizando `php artisan migrate:fresh`.
+- Verificação das migrations utilizando `php artisan migrate:status`.
+- Criação da rota de saúde `GET /api/saude`.
 
 **Dificuldades encontradas:**
 
-- 
+- Entender a diferença entre `foreign()`, `foreignId()` e `constrained()`.
+- Entender como representar as restrições de valores permitidos nas migrations.
+- Ajustar corretamente o campo `alterado_em` da tabela `historico_status`.
 
 **Decisões tomadas:**
 
-- 
+- Utilizar `foreignId()` juntamente com `constrained()` para criação das chaves estrangeiras.
+- Utilizar `enum` para limitar os valores de papel, prioridade e status.
+- Manter `tecnico_id` como campo opcional, pois um chamado pode ainda não possuir técnico responsável.
+- Utilizar `cascadeOnDelete()` nos relacionamentos de comentários e histórico com chamados.
+- Recriar o banco utilizando as migrations do Laravel com `migrate:fresh`.
+- Manter os mesmos índices definidos anteriormente no `schema.sql`.
 
 **Testes realizados:**
 
-- 
+- Execução do comando `php artisan migrate:fresh`.
+- Execução do comando `php artisan migrate:status`.
+- Verificação de que todas as migrations foram executadas com status `Ran`.
+- Teste da rota `GET /api/saude`.
+- Verificação do retorno da rota em formato JSON.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na revisão das migrations e explicar recursos do Laravel utilizados na criação do banco.
+- Parte gerada ou sugerida: correções de chaves estrangeiras, uso de `enum`, criação de índices e estrutura da rota de saúde.
+- Alterações realizadas por mim: adaptação das sugestões às tabelas e regras já definidas para o projeto ChamadoJá.
+- Como foi testado ou validado: execução das migrations, consulta do status das migrations e teste da rota de saúde.
+
 
 ### Quarta-feira — 14/10/2026
 
 **O que foi feito:**
 
-- 
+- Criação dos Models Eloquent `Usuario`, `Categoria`, `Chamado`, `Comentario` e `HistoricoStatus`.
+- Configuração da propriedade `$table` nos Models para identificar as respectivas tabelas do banco.
+- Configuração dos campos `$fillable`.
+- Criação dos relacionamentos entre os Models utilizando `belongsTo()` e `hasMany()`.
+- Configuração dos relacionamentos do chamado com solicitante, técnico, categoria, comentários e histórico de status.
+- Configuração do Model `HistoricoStatus` para não utilizar os campos padrão `created_at` e `updated_at`.
+- Teste da existência dos Models utilizando o Laravel Tinker.
+- Criação de dados de demonstração por meio do `DatabaseSeeder`.
+- Criação de usuários solicitantes e técnicos, categorias e chamados relacionados.
+- Execução do comando `php artisan migrate:fresh --seed`.
+- Teste da aplicação e da rota de saúde utilizando `curl`.
 
 **Dificuldades encontradas:**
 
-- 
+- Entender quando utilizar `belongsTo()` e quando utilizar `hasMany()`.
+- Entender como o Eloquent identifica a tabela relacionada a cada Model.
+- Configurar corretamente os relacionamentos entre usuário e chamado, já que um usuário pode atuar como solicitante ou técnico.
+- Entender a função do `$fillable` e da propriedade `$table`.
 
 **Decisões tomadas:**
 
-- 
+- Criar dois relacionamentos diferentes entre `Usuario` e `Chamado`: chamados como solicitante e chamados como técnico.
+- Manter os nomes dos Models em português conforme o padrão definido para o projeto.
+- Utilizar Seeders para gerar os dados de demonstração da aplicação.
+- Armazenar senhas de demonstração utilizando hash.
+- Criar dados relacionados utilizando os IDs retornados pelos Models criados durante o Seeder.
 
 **Testes realizados:**
 
-- 
+- Utilização do comando `php artisan tinker` para verificar se os Models estavam sendo carregados corretamente.
+- Consulta das classes `Usuario`, `Categoria`, `Chamado`, `Comentario` e `HistoricoStatus`.
+- Execução do comando `php artisan migrate:fresh --seed`.
+- Verificação da criação dos dados de demonstração.
+- Teste dos relacionamentos entre chamados, usuários e categorias.
+- Inicialização da aplicação utilizando `php artisan serve`.
+- Teste da rota `GET /api/saude` utilizando `curl.exe`.
+- Confirmação do retorno JSON indicando que a aplicação estava funcionando.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na criação dos Models, compreensão dos relacionamentos Eloquent, configuração dos Seeders e realização dos testes.
+- Parte gerada ou sugerida: estrutura dos Models, relacionamentos `belongsTo` e `hasMany`, estrutura do `DatabaseSeeder` e comandos de teste.
+- Alterações realizadas por mim: adaptação dos exemplos aos nomes, campos e relacionamentos definidos no projeto.
+- Como foi testado ou validado: execução do Tinker, execução do `migrate:fresh --seed`, consulta dos Models e teste da rota de saúde com a aplicação em execução.
 
 ### Fechamento da semana
 
 **Resumo da semana:**
 
-- 
+- A estrutura do banco definida anteriormente foi convertida para migrations do Laravel.
+- As chaves estrangeiras, restrições e índices foram configurados e testados.
+- Foram criados os Models Eloquent e seus relacionamentos.
+- Foram criados dados de demonstração utilizando Seeder.
+- As migrations e os dados iniciais foram recriados com sucesso utilizando `php artisan migrate:fresh --seed`.
+- A aplicação foi executada e a rota `GET /api/saude` retornou JSON corretamente.
+- O projeto ficou preparado para iniciar a implementação dos controllers e endpoints da API.
 
 **Pendências para a próxima semana:**
 
-- 
+- N/A
 
 ---
 
