@@ -367,79 +367,131 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 **O que foi feito:**
 
-- 
+- Início da implementação dos principais endpoints da API.
+- Criação dos controllers `UsuarioController`, `CategoriaController` e `ChamadoController`.
+- Criação dos Form Requests para validação dos dados recebidos pela API.
+- Criação do `StoreUsuarioRequest`.
+- Criação do `StoreCategoriaRequest`.
+- Criação do `StoreChamadoRequest`.
+- Criação do `UpdateChamadoRequest`.
+- Implementação das regras de validação para usuários, categorias e chamados.
+- Implementação das rotas de listagem e cadastro de usuários.
+- Implementação das rotas de listagem e cadastro de categorias.
+- Implementação das rotas de listagem, criação, consulta e atualização de chamados.
+- Definição do status inicial `aberto` diretamente no servidor durante a criação de um chamado.
+- Ajuste do `SESSION_DRIVER` para `file` após identificação de erro relacionado à ausência da tabela `sessions`.
 
 **Dificuldades encontradas:**
 
-- 
+- N/A
 
 **Decisões tomadas:**
 
-- 
+- Utilizar Form Requests para separar as regras de validação dos controllers.
+- Utilizar `Rule::in()` para limitar valores como papel e prioridade.
+- Utilizar `sometimes` nas validações de atualização para permitir alterações parciais através de `PATCH`.
+- Não permitir que o cliente informe o status inicial de um chamado.
+- Definir o status `aberto` diretamente no `ChamadoController`.
+- Utilizar `SESSION_DRIVER=file`, pois a aplicação atual não necessita armazenar sessões no PostgreSQL.
 
 **Testes realizados:**
 
-- 
+- Verificação das rotas utilizando `php artisan route:list`.
+- Teste da rota de saúde após os ajustes realizados.
+- Testes iniciais de listagem dos recursos.
+- Verificação do funcionamento das validações dos Form Requests.
+- Verificação da comunicação entre rota, controller, Model e banco de dados.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na implementação das rotas, controllers e validações e explicar o funcionamento dos recursos utilizados.
+- Parte gerada ou sugerida: estrutura inicial dos controllers, Form Requests, rotas e regras de validação.
+- Alterações realizadas por mim: adaptação dos códigos aos Models, campos e regras existentes no projeto.
+- Como foi testado ou validado: execução da aplicação, consulta das rotas e realização de requisições aos endpoints implementados.
 
 ### Quarta-feira — 21/10/2026
 
 **O que foi feito:**
 
-- 
+- Criação dos Resources `UsuarioResource`, `CategoriaResource` e `ChamadoResource`.
+- Configuração dos Resources para controlar quais atributos são retornados pela API.
+- Remoção da senha das respostas de usuários.
+- Utilização de Resources para retornar registros únicos e coleções.
+- Configuração do `ChamadoResource` para apresentar os relacionamentos carregados.
+- Finalização dos métodos `index`, `store`, `show` e `update` necessários para o CRUD principal.
+- Realização dos testes manuais exigidos pela atividade.
+- Utilização do PowerShell com `Invoke-RestMethod` e `Invoke-WebRequest` para realizar requisições HTTP.
+- Verificação dos códigos de resposta HTTP e das validações implementadas.
 
 **Dificuldades encontradas:**
 
-- 
+- N/A
 
 **Decisões tomadas:**
 
-- 
+- Utilizar Resources para controlar os atributos expostos pela API.
+- Não retornar a senha dos usuários nas respostas JSON.
+- Utilizar `UsuarioResource::collection()` e `CategoriaResource::collection()` para respostas contendo vários registros.
+- Utilizar `new Resource(...)` para respostas contendo um único registro.
+- Utilizar `Invoke-RestMethod` no PowerShell para facilitar o envio de corpos JSON.
+- Utilizar `Invoke-WebRequest` quando necessário verificar explicitamente o código HTTP retornado.
 
 **Testes realizados:**
 
-- 
+- Criação válida de usuário.
+- Tentativa de cadastro de usuário com e-mail repetido, retornando `422`.
+- Listagem de categorias.
+- Criação válida de categoria.
+- Criação válida de chamado.
+- Criação de chamado sem título, retornando `422`.
+- Criação de chamado com categoria inexistente, retornando `422`.
+- Consulta de chamado existente, retornando `200`.
+- Consulta de chamado inexistente, retornando `404`.
+- Atualização parcial de chamado utilizando `PATCH`.
+- Validação de prioridade inválida.
+- Verificação de que novos chamados são criados automaticamente com status `aberto`.
+- Verificação de que os Resources não expõem atributos que não devem ser retornados, como a senha do usuário.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na criação dos Resources, compreensão do fluxo das respostas JSON e elaboração dos testes manuais.
+- Parte gerada ou sugerida: estrutura dos Resources, ajustes nos controllers, comandos PowerShell para testes e explicações sobre os códigos HTTP.
+- Alterações realizadas por mim: adaptação dos códigos e comandos ao projeto ChamadoJá e execução dos testes manualmente.
+- Como foi testado ou validado: realização dos testes de criação, consulta, atualização e validação, comparando os resultados obtidos com os resultados esperados na atividade.
 
 ### Fechamento da semana
 
 **Resumo da semana:**
 
-- 
+- Foram implementadas as principais rotas da API para usuários, categorias e chamados.
+- Os controllers foram configurados para realizar as operações principais do sistema.
+- Os dados recebidos pela API passaram a ser validados por Form Requests.
+- Os Resources foram implementados para controlar os atributos retornados nas respostas JSON.
+- O CRUD principal de chamados foi implementado e validado.
+- Todos os testes manuais mínimos solicitados pela atividade foram executados com os resultados esperados.
+- A aplicação passou a possuir um fluxo completo entre requisição, validação, controller, Model, banco de dados, Resource e resposta JSON.
 
 **Pendências para a próxima semana:**
 
-- 
+- N/A
 
 ---
 

@@ -220,6 +220,43 @@ Os principais relacionamentos são:
 - um chamado pode possuir vários registros no histórico de status;
 - cada registro de histórico está relacionado ao usuário responsável pela alteração.
 
+## Validação
+
+Os dados recebidos pela API são validados utilizando Form Requests do Laravel.
+
+Atualmente o projeto possui:
+
+- `StoreUsuarioRequest`;
+- `StoreCategoriaRequest`;
+- `StoreChamadoRequest`;
+- `UpdateChamadoRequest`.
+
+Entre as principais regras de validação estão:
+
+- campos obrigatórios;
+- limite de caracteres;
+- validação de e-mail;
+- unicidade de e-mail e nome de categoria;
+- verificação da existência de usuários e categorias relacionados;
+- limitação dos valores permitidos para papel e prioridade;
+- suporte a atualizações parciais utilizando `sometimes`.
+
+Chamados novos recebem automaticamente o status `aberto`, sem depender do envio desse campo pelo cliente.
+
+## Resources
+
+As respostas JSON da API são controladas utilizando Resources do Laravel.
+
+Foram criados:
+
+- `UsuarioResource`;
+- `CategoriaResource`;
+- `ChamadoResource`.
+
+Os Resources definem quais atributos são expostos pela API e evitam o retorno direto de todos os dados armazenados nos Models.
+
+Informações sensíveis, como a senha dos usuários, não são retornadas nas respostas JSON.
+
 ## Dados de demonstração
 
 O projeto possui dados de demonstração gerados pelo `DatabaseSeeder`.
@@ -298,7 +335,9 @@ As seguintes rotas fazem parte do contrato inicial planejado para a aplicação:
 | PATCH | `/api/chamados/{id}/status` | Alterar o status do chamado |
 | GET | `/api/chamados/{id}/historico` | Consultar o histórico de status |
 
-Essas rotas representam o contrato inicial da API e serão implementadas gradualmente durante o projeto.
+As rotas de usuários, categorias e o CRUD principal de chamados já estão implementadas.
+
+As funcionalidades adicionais, como comentários, alteração de status e histórico, serão implementadas nas próximas etapas.
 
 ## Paginação e filtros
 
@@ -404,9 +443,53 @@ A implementação funcional da autenticação poderá ser realizada posteriormen
 
 ## Testes
 
-Os principais fluxos da aplicação deverão possuir testes.
+Foram realizados testes manuais dos principais endpoints da API utilizando PowerShell com `Invoke-RestMethod` e `Invoke-WebRequest`.
 
-Quando os testes forem implementados, poderão ser executados com:
+### Casos testados
+
+| Teste | Resultado esperado | Resultado obtido |
+|---|---|---|
+| Criação válida de usuário | `201 Created` | Sucesso |
+| Cadastro de usuário com e-mail repetido | `422 Unprocessable Content` | Sucesso |
+| Listagem de categorias | `200 OK` | Sucesso |
+| Criação válida de categoria | `201 Created` | Sucesso |
+| Criação válida de chamado | `201 Created` | Sucesso |
+| Criação de chamado sem título | `422 Unprocessable Content` | Sucesso |
+| Criação com categoria inexistente | `422 Unprocessable Content` | Sucesso |
+| Consulta de chamado existente | `200 OK` | Sucesso |
+| Consulta de chamado inexistente | `404 Not Found` | Sucesso |
+| Atualização parcial de chamado | `200 OK` | Sucesso |
+| Atualização com prioridade inválida | `422 Unprocessable Content` | Sucesso |
+
+### Exemplo de criação de chamado
+
+`POST /api/chamados`
+
+Entrada:
+
+```json
+{
+    "solicitante_id": 1,
+    "categoria_id": 1,
+    "titulo": "Erro ao acessar sistema",
+    "descricao": "O sistema apresenta erro depois do login.",
+    "prioridade": "alta"
+}
+```
+
+O chamado é criado automaticamente com:
+
+```json
+{
+    "status": "aberto"
+}
+```
+
+### Testes automatizados
+
+Os principais fluxos da aplicação também deverão possuir testes automatizados.
+
+Quando forem implementados, poderão ser executados com:
 
 ```bash
 php artisan test
@@ -521,6 +604,11 @@ Até o momento foram concluídas:
 - Models Eloquent;
 - relacionamentos entre os Models;
 - dados de demonstração utilizando Seeder;
-- rota de saúde `GET /api/saude`.
+- rota de saúde `GET /api/saude`;
+- controllers de usuários, categorias e chamados;
+- Form Requests e validações;
+- Resources para controle das respostas JSON;
+- CRUD principal de chamados;
+- testes manuais dos principais endpoints.
 
-As próximas etapas envolvem a implementação dos controllers, validações e endpoints da API.
+As próximas etapas envolvem a implementação de comentários, alteração de status, histórico de status e novos testes da API.

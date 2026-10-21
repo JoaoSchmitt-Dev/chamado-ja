@@ -16,6 +16,10 @@ class Usuario extends Model
         'papel',
     ];
 
+    protected $hidden = [
+        'senha',
+    ];
+
     public function chamadosComoSolicitante(): HasMany
     {
         return $this->hasMany(Chamado::class, 'solicitante_id');
