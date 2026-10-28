@@ -495,85 +495,148 @@ O desenvolvimento será acompanhado durante 8 semanas, considerando registros à
 
 ---
 
-## Semana 5 — 26/10/2026 e 28/10/2026
-
 ### Segunda-feira — 26/10/2026
 
 **O que foi feito:**
 
-- 
+- Implementação dos endpoints de comentários dos chamados.
+- Criação do StoreComentarioRequest.
+- Criação do ComentarioController.
+- Criação do ComentarioResource.
+- Implementação da listagem de comentários de um chamado.
+- Implementação da criação de comentários vinculados a um chamado e a um usuário.
+- Criação do AlterarStatusChamadoRequest.
+- Criação do Service AlterarStatusDoChamado.
+- Implementação das regras de transição de status.
+- Utilização de DB::transaction() para garantir que a alteração do status e a criação do histórico sejam realizadas em conjunto.
+- Criação do HistoricoStatusResource.
+- Implementação do endpoint para consulta do histórico de status.
+- Realização de testes de alteração válida e inválida de status.
 
 **Dificuldades encontradas:**
 
-- 
+- N/A
 
 **Decisões tomadas:**
 
-- 
+- Utilizar Form Requests para validar os dados enviados nos comentários e nas alterações de status.
+- Obter o chamado_id através da rota, evitando que ele precise ser enviado no corpo da requisição.
+- Criar os comentários através do relacionamento do chamado.
+- Separar a regra de alteração de status em um Service.
+- Utilizar DomainException para representar transições de status não permitidas.
+- Utilizar transação no banco para garantir que a atualização do chamado e o registro no histórico ocorram juntos.
 
 **Testes realizados:**
 
-- 
+- Criação de comentário em chamado existente.
+- Listagem dos comentários de um chamado.
+- Alteração válida de status de em_atendimento para resolvido.
+- Consulta do histórico de status.
+- Tentativa de alteração inválida de resolvido para aberto, retornando 422.
+- Verificação de que o chamado permaneceu com status resolvido após a tentativa inválida.
+- Verificação de que nenhuma entrada inválida foi criada no histórico.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na implementação dos comentários, alteração de status, histórico e compreensão das regras de negócio.
+- Parte gerada ou sugerida: estrutura dos Requests, Resources, Controller, Service e comandos PowerShell para realização dos testes.
+- Alterações realizadas por mim: adaptação das regras e códigos ao modelo de dados do projeto ChamadoJá.
+- Como foi testado ou validado: execução dos endpoints e realização dos testes manuais, verificando os status retornados e os registros criados no banco.
 
 ### Quarta-feira — 28/10/2026
 
 **O que foi feito:**
 
-- 
+- Criação do IndexChamadoRequest para validação dos parâmetros utilizados na listagem de chamados.
+- Implementação de filtros por status.
+- Implementação de filtros por prioridade.
+- Implementação de filtros por categoria.
+- Implementação de filtros por solicitante.
+- Implementação de filtro por período de criação.
+- Utilização de Chamado::query() para construção dinâmica da consulta.
+- Utilização de when() para aplicar apenas os filtros informados na requisição.
+- Implementação de ordenação por campos permitidos.
+- Implementação de ordenação crescente e decrescente.
+- Implementação de paginação com 15 registros por página.
+- Criação do RelatorioController.
+- Implementação do endpoint GET /api/relatorios/resumo-chamados.
+- Implementação da contagem total de chamados.
+- Implementação da contagem de chamados agrupados por status utilizando consulta agregada no banco de dados.
+- Realização dos testes dos filtros, paginação, ordenação e resumo.
 
 **Dificuldades encontradas:**
 
-- 
+- Entendimento da construção dinâmica de consultas utilizando query() e when().
+- Entendimento da utilização de funções reduzidas com fn.
+- Entendimento da necessidade de limitar os campos permitidos para ordenação.
+- Durante os testes, o PowerShell apresentou os dados aninhados do resumo de forma simplificada.
 
 **Decisões tomadas:**
 
-- 
+- Utilizar query parameters para os filtros do endpoint GET /api/chamados.
+- Aplicar os filtros somente quando forem informados.
+- Permitir ordenação apenas por campos previamente definidos.
+- Utilizar created_at internamente para representar a data de criação dos chamados.
+- Utilizar paginação de 15 registros por página.
+- Criar um Controller separado para os relatórios.
+- Realizar as contagens diretamente no banco utilizando COUNT e GROUP BY, evitando carregar todos os chamados para realizar a contagem em PHP.
 
 **Testes realizados:**
 
-- 
+- Filtro por status.
+- Filtro por prioridade.
+- Filtro por categoria.
+- Filtro por solicitante.
+- Combinação de filtros.
+- Teste de ordenação dos chamados.
+- Teste de paginação.
+- Verificação da rota GET /api/relatorios/resumo-chamados.
+- Consulta do resumo geral dos chamados.
+- Verificação da quantidade total de chamados.
+- Verificação da quantidade de chamados agrupados por status.
 
 **Pendências:**
 
-- 
+- N/A
 
 **Alterações após revisão:**
 
-- 
+- N/A
 
 **Uso de IA:**
 
-- Ferramenta utilizada:
-- Objetivo do uso:
-- Parte gerada ou sugerida:
-- Alterações realizadas por mim:
-- Como foi testado ou validado:
+- Ferramenta utilizada: ChatGPT.
+- Objetivo do uso: auxiliar na implementação dos filtros, paginação, ordenação e relatório de resumo dos chamados.
+- Parte gerada ou sugerida: estrutura do IndexChamadoRequest, alterações no método index() do ChamadoController, criação do RelatorioController e comandos para testes.
+- Alterações realizadas por mim: adaptação dos filtros, nomes dos campos, status e regras utilizadas no projeto ChamadoJá.
+- Como foi testado ou validado: execução dos endpoints através do PowerShell e comparação dos resultados obtidos com os resultados esperados.
 
 ### Fechamento da semana
 
 **Resumo da semana:**
 
-- 
+- Foram implementados os endpoints de comentários dos chamados.
+- Foi implementado o controle de transições de status.
+- As alterações de status passaram a gerar registros no histórico.
+- Foi utilizada transação de banco para garantir a consistência entre atualização de status e histórico.
+- Foram implementados filtros na listagem de chamados.
+- Foi implementada paginação dos resultados.
+- Foi implementada ordenação controlada por campos permitidos.
+- Foi criado um endpoint de relatório com o total de chamados e a quantidade agrupada por status.
+- Os endpoints implementados foram testados manualmente com os resultados esperados.
 
 **Pendências para a próxima semana:**
 
-- 
+- N/A
 
 ---
 
